@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Combined Animation and Form</title>
+    <title>Upload CSV</title>
     <style>
         body {
             margin: 0;
@@ -150,7 +150,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 20vh;
+            height: 15vh;
             padding: 0 20px;
             background-color: black;
             color: white;
@@ -209,14 +209,14 @@
     <header>
         <img src="img/EDU360__1_-removebg-preview.png" alt="Logo">
         <span class="hello">EDU360</span>
-        <h1>Student Performance Analysis</h1>
+        <h1></h1>
     </header>
     <div class="background"></div>
 
     <div class="form-container">
         <h1>Upload CSV to Database</h1>
         <form id="uploadForm" method="post" enctype="multipart/form-data">
-            <label for="table_name">Table Name:</label>
+            <label for="table_name">Class Name:</label>
             <input type="text" id="table_name" name="table_name" required>
 
             <label for="file">Choose CSV File:</label>
