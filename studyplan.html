@@ -5,44 +5,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Study Recommendations</title>
     <style>
-        .container {
-            margin: 20px;
+.container {
+    margin: 20px;
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #F9F9F9;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+.result-container {
+    margin-top: 20px;
+    width: 100%;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 20vh;
+    padding: 0 20px;
+    background-color: #000000;
+    color: white;
+    z-index: 1;
+}
+
+header img {
+    width: 10%;
+    height: auto;
+    margin-bottom: 5px;
+    display: block;
+} 
+header h1 {
+            margin: 0;
+            flex-grow: 1;
+            text-align: center;
+            font-size: calc(2.0 * 80%);
+            line-height: calc(0.5 * 80%);
         }
-        .hidden {
-            display: none;
-        }
-        .visible {
-            display: block;
-        }
-        .result-container {
-            margin-top: 20px;
+        header button {
+            padding: 15px 30px; /* Increased padding */
+            font-size: 16px;
+            cursor: pointer;
+            background-color: white;
+            color: #000; /* Changed text color to black */
+            border: none;
+            border-radius: 5px;
+            position: relative;
+            text-align: center; /* Center-align text */
         }
 
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-  between;
-            height: 20vh;
-            padding: 0 20px;
-            background-color: BLACK;
-            color: white;
-            z-index: 1; /* Ensure the header is above other elements */
-        }
+#headerhead {
+    width: 100%;
+    margin-left: -250px;
+    
+}
 
-        header img {
-            width: 10%; /* Larger image size */
-            height: auto;
-            margin-bottom: 5px; /* Spacing between image and text */
-            display: block; /* Ensure proper positioning */
-            /* margin: 0 auto; Center-align image */
-        }
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
 
-        #headerhead{
-            margin-left: 282px;
-        }
+input[type="text"],
+input[type="number"] {
+    width: calc(100% - 24px);
+    padding: 10px;
+    margin: 5px 0 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+h2 {
+    color: #333;
+}
+
+.recommendation,
+.timetable-entry {
+    background-color: #FFFFFF;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+
 
     .container {
-    border: 2px solid red;
+    border:2px solid black;
     width: 80%; /* Adjust the width as needed */
     margin: auto; /* Center the container horizontally */
     display: flex;
@@ -51,7 +129,7 @@
 }
 
 .hidden{
-    border: 2px solid  red;
+
     width: 100px;
 }
 
