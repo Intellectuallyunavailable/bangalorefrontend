@@ -58,12 +58,11 @@
             display: flex;
             justify-content: center;
             align-items: flex-end; /* Align boxes to the bottom */
-            height: calc(80vh - 30px); /* Adjusted height to account for header and margin */
-            margin: 20px 0;
-            overflow-y: auto; /* Enable vertical scrolling for container */
+            height: 600px; /* Adjusted height to account for header and margin */
+            overflow-y: auto; /* Enable vertical scrolling for container */ 
         }
         .box {
-            border: 2px solid white;
+            border: 2px solid red;
             border-radius: 40px ;
             flex: 1;
             display: flex;
@@ -78,9 +77,11 @@
             font-size: 23px;
             margin: 0 10px; /* Adjusted margin */
             width: 500px;
-            height: 615px;
+            height: 582px;
         }
         .box img {
+            width: 100%;
+            height: 350px;
             max-width: 100%;
             max-height: 100%; /* Ensure the image doesn't overflow */
         }
@@ -110,7 +111,7 @@
             width: 100%;
             height: 300px;
             text-align: center;
-            font-family: cursive;
+            font-family: Source Sans Pro;
             align-items: center;
         }
 
@@ -123,9 +124,6 @@
 </head>
 <body>
     <header>
-        
-        
-
         <img src="img/EDU360__1_-removebg-preview.png" alt="Logo">
         <span class="hello" style="font-size: 1.8em;">EDU360    </span> <!-- Increased size by 80% -->
         <h1 id="headerhead">Home</h1>
@@ -145,17 +143,17 @@
         <a href="/analyze.html" class="box" id="box1">
             <img src="img/stu.jpeg" alt="Image 1">
             <p`>1. Analyze Student Performance</p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, cupiditate.</p>
+            <p>A student performance analysis tool that helps the teacher understand the specifics of how the student has been progressing. click on the upload csv button on the upper right corner to add your class and get started</p>
             </a>
         <a href="/studyplan.html" class="box" id="box2">
             <img src="img/WhatsApp Image 2024-06-08 at 02.00.57_e89c353d.jpg" alt="Image 2">
             <p>2. Personalized Study Planner</p>
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Architecto, ab!</p>
+            <p>Use AI and a bit of our algorithm to get tailored study recommendations, personalized tips to improve and a timetable made just for you</p>
         </a>
         <a href="/sheshank.html" class="box" id="box3">
             <img src="img/Designer.png" alt="Image 3">
             <p>3. Adaptive Assessment</p>
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aspernatur, nulla!</p>
+            <p>Make use of Adaptive Assessment that uses AI and a few personalized questions to generate an assessment/test based on your learning pace.</p>
         </a>
     </div>
     <footer>
