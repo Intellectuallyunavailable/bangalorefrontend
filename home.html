@@ -102,6 +102,20 @@
             margin-right: 140px;
             
         }
+
+        .welcome{
+            display: flex;
+            border: 2px solid red;
+            width: 100%;
+            height: 300px;
+            text-align: center;
+            font-family: sans-serif;
+            align-items: center;
+        }
+
+        .welcome h2{
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
@@ -120,9 +134,10 @@
         </a>
     </header>
 
-
-    <h2>home page: welcome to the homepage of edu360, here you can access our tools that can help teachers upload data to a secure database system, get student progress analytics, and other tools to help their students reach further than before.</h2>      
-
+    <div class="welcome">
+        <h2>Welcome to the homepage of edu360, here you can access our tools that can help teachers upload data to a secure database system, get student progress analytics, and other tools to help their students reach further than before.</h2>      
+    </div>
+    
     <div class="container">
         <a href="/analyze.html" class="box" id="box1">
             <img src="img/stu.jpeg" alt="Image 1">
