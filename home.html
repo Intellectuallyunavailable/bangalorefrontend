@@ -15,7 +15,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 20vh;
+            height: 15vh;
             padding: 0 20px;
             background-color: BLACK;
             color: white;
@@ -63,6 +63,8 @@
             overflow-y: auto; /* Enable vertical scrolling for container */
         }
         .box {
+            border: 2px solid white;
+            border-radius: 40px ;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -102,10 +104,28 @@
             margin-right: 140px;
             
         }
+
+        .welcome{
+            display: flex;
+            width: 100%;
+            height: 300px;
+            text-align: center;
+            font-family: cursive;
+            align-items: center;
+        }
+
+        .welcome h2{
+            font-size: 30px;
+            font-family: cursive;
+            
+        }
     </style>
 </head>
 <body>
     <header>
+        
+        
+
         <img src="img/EDU360__1_-removebg-preview.png" alt="Logo">
         <span class="hello" style="font-size: 1.8em;">EDU360    </span> <!-- Increased size by 80% -->
         <h1 id="headerhead">Home</h1>
@@ -116,10 +136,15 @@
         </button>
         </a>
     </header>
+
+    <div class="welcome">
+        <h2>Welcome to the homepage of edu360, here you can access our tools that can help teachers upload data to a secure database system, get student progress analytics, and other tools to help their students reach further than before.</h2>      
+    </div>
+    
     <div class="container">
         <a href="/analyze.html" class="box" id="box1">
             <img src="img/stu.jpeg" alt="Image 1">
-            <p>1. Analyze Student Performance</p>
+            <p`>1. Analyze Student Performance</p>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, cupiditate.</p>
             </a>
         <a href="/studyplan.html" class="box" id="box2">
