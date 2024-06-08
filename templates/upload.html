@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combined Animation and Form</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            background: #001f3f; /* Dark blue background */
+        }
+
+        .background {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 5s ease-in forwards, burst 0.5s ease-in 4.5s forwards;
+            opacity: 0;
+        }
+
+        .large-bubble {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            animation: float-large 10s linear infinite, burst 1s ease-in 9s forwards;
+            opacity: 0.8;
+        }
+
+        .large-bubble-left {
+            left: 0;
+            bottom: 10%;
+        }
+
+        .large-bubble-right {
+            right: 0;
+            bottom: 20%;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(var(--bubble-end-x) * 100vw), calc(var(--bubble-end-y) * -100vh));
+            }
+        }
+
+        @keyframes float-large {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh);
+            }
+        }
+
+        @keyframes burst {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* CSS for the form */
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: none;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        label {
+            margin-right: 10px;
+            display: block;
+            margin-bottom: 10px;
+            color: white;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="file"] {
+            padding: 10px;
+            margin-bottom: 15px;
+            width: calc(100% - 20px);
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            display: block;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+
+        /* Header styles */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 20vh;
+            padding: 0 20px;
+            background-color: black;
+            color: white;
+            z-index: 1;
+        }
+
+        header img {
+            height: 80%;
+        }
+
+        header .hello {
+            color: white;
+            font-size: 1.8em;
+        }
+
+        header h1 {
+            margin: 0;
+            flex-grow: 1;
+            text-align: center;
+            font-size: calc(2.0 * 80%);
+            line-height: calc(0.5 * 80%);
+        }
+
+        header button {
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: white;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            position: relative;
+            text-align: center;
+        }
+
+        header button img {
+            width: 30px;
+            height: auto;
+            margin-bottom: 5px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        footer {
+            position: absolute;
+            bottom: -100px; /* 100px below the bottom of the viewport */
+            width: 100%;
+            background-color: gray;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="img/EDU360__1_-removebg-preview.png" alt="Logo">
+        <span class="hello">EDU360</span>
+        <h1>Student Performance Analysis</h1>
+    </header>
+    <div class="background"></div>
+
+    <div class="form-container">
+        <h1>Upload CSV to Database</h1>
+        <form id="uploadForm" method="post" enctype="multipart/form-data">
+            <label for="table_name">Table Name:</label>
+            <input type="text" id="table_name" name="table_name" required>
+
+            <label for="file">Choose CSV File:</label>
+            <input type="file" id="file" name="file" accept=".csv" required>
+
+            <button type="submit">Upload</button>
+        </form>
+
+        <div id="message" class="message" style="display: none;"></div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Edu360</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const background = document.querySelector('.background');
+            const colors = ['rgba(255, 0, 0, 0.7)', 'rgba(0, 255, 0, 0.7)', 'rgba(0, 0, 255, 0.7)', 'rgba(255, 255, 0, 0.7)', 'rgba(0, 255, 255, 0.7)', 'rgba(255, 0, 255, 0.7)'];
+
+            function createBubble() {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                const size = Math.random() * 50 + 10;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                bubble.style.left = `${Math.random() * 100}vw`;
+                bubble.style.top = `${Math.random() * 100}vh`;
+                bubble.style.setProperty('--bubble-end-x', `${Math.random() - 0.5}`);
+                bubble.style.setProperty('--bubble-end-y', `${Math.random() - 1}`);
+
+                background.appendChild(bubble);
+
+                // Remove the bubble after animation completes
+                setTimeout(() => {
+                    bubble.remove();
+                }, 5000);
+            }
+
+            // Create larger bubbles on the left and right sides
+            function createLargeBubble(position) {
+                const largeBubble = document.createElement('div');
+                largeBubble.className = `large-bubble ${position}`;
+                background.appendChild(largeBubble);
+
+                // Remove the bubble after animation completes
+                setTimeout(() => {
+                    largeBubble.remove();
+                }, 10000);
+            }
+
+            // Create bubbles at shorter intervals for higher density (80% more)
+            setInterval(createBubble, 55);
+
+            // Create large bubbles at intervals
+            setInterval(() => createLargeBubble('large-bubble-left'), 10000);
+            setInterval(() => createLargeBubble('large-bubble-right'), 12000);
+        });
+    </script>
+</body>
+</html>

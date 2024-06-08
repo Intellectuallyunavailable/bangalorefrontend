@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Recommendations</title>
+    <style>
+        .container {
+            margin: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        .visible {
+            display: block;
+        }
+        .result-container {
+            margin-top: 20px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-  between;
+            height: 20vh;
+            padding: 0 20px;
+            background-color: BLACK;
+            color: white;
+            z-index: 1; /* Ensure the header is above other elements */
+        }
+
+        header img {
+            width: 10%; /* Larger image size */
+            height: auto;
+            margin-bottom: 5px; /* Spacing between image and text */
+            display: block; /* Ensure proper positioning */
+            /* margin: 0 auto; Center-align image */
+        }
+
+        #headerhead{
+            margin-left: 282px;
+        }
+
+    .container {
+    border: 2px solid red;
+    width: 80%; /* Adjust the width as needed */
+    margin: auto; /* Center the container horizontally */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the items vertically */
+}
+
+.hidden{
+    border: 2px solid  red;
+    width: 100px;
+}
+
+    </style>
+    <script>
+        let currentStep = 0;
+        let subjects = [];
+        let topics = {};
+        const steps = [
+            'student_id_container',
+            'preferred_time_of_study_container',
+            'preferred_method_of_study_container',
+            'usual_study_duration_container',
+            'problems_faced_container',
+            'subjects_container'
+        ];
+
+        function showNextStep() {
+            if (currentStep < steps.length - 1) {
+                document.getElementById(steps[currentStep]).classList.remove('visible');
+                document.getElementById(steps[currentStep]).classList.add('hidden');
+                currentStep++;
+                document.getElementById(steps[currentStep]).classList.remove('hidden');
+                document.getElementById(steps[currentStep]).classList.add('visible');
+            } else {
+                showTopicInputs();
+            }
+        }
+
+        function showTopicInputs() {
+            const subjectsInput = document.getElementById('subjects').value.split(',');
+            subjects = subjectsInput.map(subject => subject.trim());
+            let topicsHTML = '';
+
+            subjects.forEach((subject, index) => {
+                topicsHTML += `
+                    <div id="topic_container_${index}" class="topic-container visible">
+                        <label for="topics_${index}">Topics for ${subject} (comma-separated):</label>
+                        <input type="text" id="topics_${index}" required><br>
+                        <button onclick="saveTopics(${index})">Next</button>
+                    </div>
+                `;
+            });
+
+            document.getElementById('topic_inputs').innerHTML = topicsHTML;
+            document.getElementById('topic_inputs').classList.remove('hidden');
+            document.getElementById('topic_inputs').classList.add('visible');
+        }
+
+        function saveTopics(index) {
+            const topicsInput = document.getElementById(`topics_${index}`).value.split(',');
+            topics[subjects[index]] = topicsInput.map(topic => topic.trim());
+
+            document.getElementById(`topic_container_${index}`).classList.remove('visible');
+            document.getElementById(`topic_container_${index}`).classList.add('hidden');
+
+            if (index + 1 < subjects.length) {
+                document.getElementById(`topic_container_${index + 1}`).classList.remove('hidden');
+                document.getElementById(`topic_container_${index + 1}`).classList.add('visible');
+            } else {
+                generateRecommendations();
+            }
+        }
+
+        async function generateRecommendations() {
+            const studentId = document.getElementById('student_id').value;
+            const preferredTimeOfStudy = document.getElementById('preferred_time_of_study').value;
+            const preferredMethodOfStudy = document.getElementById('preferred_method_of_study').value;
+            const usualStudyDuration = document.getElementById('usual_study_duration').value;
+            const problemsFaced = document.getElementById('problems_faced').value;
+
+            const studyPreferences = {
+                'Preferred time of study': preferredTimeOfStudy,
+                'Preferred method of study': preferredMethodOfStudy,
+                'Usual study duration': usualStudyDuration,
+                'Problems faced during study': problemsFaced
+            };
+
+            const response = await fetch('http://127.0.0.1:5000/generate_recommendations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    student_id: parseInt(studentId),
+                    study_preferences: studyPreferences,
+                    topics: topics
+                })
+            });
+
+            const data = await response.json();
+
+            displayRecommendations(data.study_recommendations);
+            displayTimetable(data.timetable);
+        }
+
+        function displayRecommendations(recommendations) {
+            const recommendationsContainer = document.getElementById('recommendations');
+            recommendationsContainer.innerHTML = '';
+
+            recommendations.forEach(subjectRecommendation => {
+                for (const [subject, recommendation] of Object.entries(subjectRecommendation)) {
+                    const recommendationDiv = document.createElement('div');
+                    recommendationDiv.classList.add('recommendation');
+                    recommendationDiv.innerHTML = `<h3>${subject}</h3>`;
+                    const recommendationList = document.createElement('ul');
+                    recommendation.forEach(item => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = item;
+                        recommendationList.appendChild(listItem);
+                    });
+                    recommendationDiv.appendChild(recommendationList);
+                    recommendationsContainer.appendChild(recommendationDiv);
+                }
+            });
+        }
+
+        function displayTimetable(timetable) {
+            const timetableContainer = document.getElementById('timetable');
+            timetableContainer.innerHTML = '';
+
+            timetable.forEach(entry => {
+                const entryDiv = document.createElement('div');
+                entryDiv.classList.add('timetable-entry');
+                entryDiv.innerHTML = `<strong>Time:</strong> ${entry.Time}<br><strong>Subject:</strong> ${entry.Subject}<br><strong>Topic:</strong> ${entry.Topic}<br><strong>Pomodoro Session:</strong> ${entry['Pomodoro Session']}<br><br>`;
+                timetableContainer.appendChild(entryDiv);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById(steps[currentStep]).classList.add('visible');
+        });
+    </script>
+</head>
+<header>
+    <img src="img/EDU360__1_-removebg-preview.png" alt="Logo">
+    <span class="hello" style="font-size: 1.8em;">EDU360    </span> 
+    <h1 id="headerhead">Analyze Student Performance</h1>
+</header>
+<body>
+    <div class="container">
+        <!-- <h1>Study Recommendations</h1> -->
+        <div id="student_id_container" class="hidden">
+            <label for="student_id">Student ID:</label>
+            <input type="number" id="student_id" required><br>
+            <button onclick="showNextStep()">Next</button>
+        </div>
+
+        <div id="preferred_time_of_study_container" class="hidden">
+            <label for="preferred_time_of_study">Preferred time of study:</label>
+            <input type="text" id="preferred_time_of_study" required><br>
+            <button onclick="showNextStep()">Next</button>
+        </div>
+
+        <div id="preferred_method_of_study_container" class="hidden">
+            <label for="preferred_method_of_study">Preferred method of study:</label>
+            <input type="text" id="preferred_method_of_study" required><br>
+            <button onclick="showNextStep()">Next</button>
+        </div>
+
+        <div id="usual_study_duration_container" class="hidden">
+            <label for="usual_study_duration">Usual duration of study sessions:</label>
+            <input type="text" id="usual_study_duration" required><br>
+            <button onclick="showNextStep()">Next</button>
+        </div>
+
+        <div id="problems_faced_container" class="hidden">
+            <label for="problems_faced">Problems faced during study:</label>
+            <input type="text" id="problems_faced" required><br>
+            <button onclick="showNextStep()">Next</button>
+        </div>
+
+        <div id="subjects_container" class="hidden">
+            <label for="subjects">Subjects (comma-separated):</label>
+            <input type="text" id="subjects" required><br>
+            <button onclick="showNextStep()">Submit</button>
+        </div>
+
+        <div id="topic_inputs" class="hidden"></div>
+
+        <div class="result-container">
+            <h2>Study Recommendations</h2>
+            <div id="recommendations"></div>
+
+            <h2>Timetable</h2>
+            <div id="timetable"></div>
+        </div>
+    </div>
+</body>
+</html>

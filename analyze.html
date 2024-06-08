@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            height: 100%; /* Set body height to 100% */
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 20vh;
+            padding: 0 20px;
+            background-color: BLACK;
+            color: white;
+            z-index: 1; /* Ensure the header is above other elements */
+        }
+        header img {
+            height: 80%;
+        }
+        header .hello {
+            color: white;
+            font-size: 1.8em; /* Increased size by 80% */
+        }
+        header h1 {
+            margin: 0;
+            flex-grow: 1;
+            text-align: center;
+            font-size: calc(2.0 * 80%);
+            line-height: calc(0.5 * 80%);
+        }
+        header button {
+            padding: 15px 30px; /* Increased padding */
+            font-size: 16px;
+            cursor: pointer;
+            background-color: white;
+            color: #000; /* Changed text color to black */
+            border: none;
+            border-radius: 5px;
+            position: relative;
+            text-align: center; /* Center-align text */
+        }
+        header button img {
+            width: 30px; /* Larger image size */
+            height: auto;
+            margin-bottom: 5px; /* Spacing between image and text */
+            display: block; /* Ensure proper positioning */
+            margin: 0 auto; /* Center-align image */
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .form-group select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 200px;
+        }
+        #analyzeButton {
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .analysis-results {
+            margin-top: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            text-align: center;
+        }
+        .graph {
+            margin-top: 20px;
+        }
+        footer {
+            background-color: gray;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: relative; /* Change positioning to relative */
+            bottom: 0;
+            width: 100%;
+            z-index: 1; /* Ensure the footer is above other elements */
+        }
+
+        #headerhead{
+            width: 100%;
+            margin-right: 240px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="img/EDU360__1_-removebg-preview.png" alt="Logo">
+        <span class="hello" style="font-size: 1.8em;">EDU360    </span> 
+        <h1 id="headerhead">Analyze Student Performance</h1>
+    </header>
+    <div class="main-content">
+        <div class="form-group">
+            <label for="tables">Select Table:</label>
+            <select id="tables">
+                <option value="">Select Table</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="studentIds">Select Student ID:</label>
+            <select id="studentIds">
+                <option value="">Select Student ID</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="subjects">Select Subject:</label>
+            <select id="subjects">
+                <option value="">Select Subject</option>
+            </select>
+        </div>
+
+        <button id="analyzeButton">Analyze</button>
+
+        <div class="analysis-results">
+            <h2>Analysis Results</h2>
+            <div id="insights" class="insights"></div>
+
+            <div id="marksGraph" class="graph"></div>
+            <div id="studyHoursGraph" class="graph"></div>
+            <div id="attendanceGraph" class="graph"></div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Fetch tables
+            $.getJSON('http://127.0.0.1:5000/tables', function(data) {
+                data.forEach(function(table) {
+                    $('#tables').append(new Option(table[0], table[0]));
+                });
+            });
+
+            // Fetch student IDs when table is selected
+            $('#tables').change(function() {
+                var tableName = $(this).val();
+                if (tableName) {
+                    $.getJSON('http://127.0.0.1:5000/student_ids/' + tableName, function(data) {
+                        $('#studentIds').empty().append(new Option('Select Student ID', ''));
+                        data.forEach(function(student) {
+                            $('#studentIds').append(new Option(student[0], student[0]));
+                        });
+                    });
+                } else {
+                    $('#studentIds').empty().append(new Option('Select Student ID', ''));
+                    $('#subjects').empty().append(new Option('Select Subject', ''));
+                }
+            });
+
+            // Fetch subjects when student ID is selected
+            $('#studentIds').change(function() {
+                var tableName = $('#tables').val();
+                var studentId = $(this).val();
+                if (tableName && studentId) {
+                    $.getJSON('http://127.0.0.1:5000/subjects/' + tableName + '/' + studentId, function(data) {
+                        $('#subjects').empty().append(new Option('Select Subject', ''));
+                        data.forEach(function(subject) {
+                            $('#subjects').append(new Option(subject[0], subject[0]));
+                        });
+                    });
+                } else {
+                    $('#subjects').empty().append(new Option('Select Subject', ''));
+                }
+            });
+
+            // Analyze when button is clicked
+            $('#analyzeButton').click(function() {
+                var tableName = $('#tables').val();
+                var studentId = $('#studentIds').val();
+                var subject = $('#subjects').val();
+                if (!tableName || !studentId || !subject) {
+                    alert('Please select table, student ID, and subject.');
+                    return;
+                }
+                $.getJSON('http://127.0.0.1:5000/analyze/' + tableName + '/' + studentId + '/' + subject, function(data) {
+                    var insightsHtml = `
+                        <p><strong>Average Study Hours:</strong> ${data.average_study_hours}</p>
+                        <p><strong>Average Attendance:</strong> ${data.average_attendance}%</p>
+                        <p><strong>Average Marks:</strong> ${data.average_marks}</p>
+                        <p><strong>Marks Consistency (Standard Deviation):</strong> ${data.marks_consistency}</p>
+                        <p><strong>Study Hours Consistency (Standard Deviation):</strong> ${data.study_hours_consistency}</p>
+                        <p><strong>Performance Trend:</strong> ${data.performance_trend}</p>
+                        <p><strong>Study Efficiency (Correlation between Study Hours and Marks):</strong> ${data.study_efficiency}</p>
+                        <p><strong>Attendance Impact (Correlation between Attendance and Marks):</strong> ${data.attendance_impact}</p>
+                        <p><strong>Improvement Rate:</strong> ${data.improvement_rate}</p>
+                    `;
+                    $('#insights').html(insightsHtml);
+
+                    var marksTrace = {
+                        x: data.marks_data.x,
+                        y: data.marks_data.y,
+                        mode: 'lines+markers',
+                        type: 'scatter',
+                        name: 'Marks'
+                    };
+
+                    var studyHoursTrace = {
+                        x: data.study_hours_data.x,
+                        y: data.study_hours_data.y,
+                        mode: 'lines+markers',
+                        type: 'scatter',
+                        name: 'Study Hours'
+                    };
+
+                    var attendanceTrace = {
+                        x: data.attendance_data.x,
+                        y: data.attendance_data.y,
+                        mode: 'lines+markers',
+                        type: 'scatter',
+                        name: 'Attendance'
+                    };
+
+                    var marksLayout = {
+                        title: 'Marks Over Time',
+                        xaxis: { title: 'Test Number' },
+                        yaxis: { title: 'Marks' }
+                    };
+
+                    var studyHoursLayout = {
+                        title: 'Study Hours Over Time',
+                        xaxis: { title: 'Test Number' },
+                        yaxis: { title: 'Study Hours' }
+                    };
+
+                    var attendanceLayout = {
+                        title: 'Attendance Over Time',
+                        xaxis: { title: 'Test Number' },
+                        yaxis: { title: 'Attendance (%)' }
+                    };
+
+                    Plotly.newPlot('marksGraph', [marksTrace], marksLayout);
+                    Plotly.newPlot('studyHoursGraph', [studyHoursTrace], studyHoursLayout);
+                    Plotly.newPlot('attendanceGraph', [attendanceTrace], attendanceLayout);
+                });
+            });
+        });
+    </script>
+</body>
+<footer>
+    <p>&copy; 2024 Edu360</p>
+</footer>
+</html>

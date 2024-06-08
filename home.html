@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            height: 100%; /* Set body height to 100% */
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 20vh;
+            padding: 0 20px;
+            background-color: BLACK;
+            color: white;
+            z-index: 1; /* Ensure the header is above other elements */
+        }
+        header img {
+            height: 80%;
+        }
+        header .hello {
+            color: white;
+            font-size: 1.8em; /* Increased size by 80% */
+            /* flex-grow: 1; */
+        }
+        header h1 {
+            margin: 0;  
+            flex-grow: 1;
+            text-align: center;
+            font-size: calc(2.0 * 80%);
+            line-height: calc(0.5 * 80%);
+        }
+        header button {
+            padding: 15px 30px; /* Increased padding */
+            font-size: 16px;
+            cursor: pointer;
+            background-color: white;
+            color: #000; /* Changed text color to black */
+            border: none;
+            border-radius: 5px;
+            position: relative;
+            text-align: center; /* Center-align text */
+        }
+        header button img {
+            width: 30px; /* Larger image size */
+            height: auto;
+            margin-bottom: 5px; /* Spacing between image and text */
+            display: block; /* Ensure proper positioning */
+            margin: 0 auto; /* Center-align image */
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end; /* Align boxes to the bottom */
+            height: calc(80vh - 30px); /* Adjusted height to account for header and margin */
+            margin: 20px 0;
+            overflow-y: auto; /* Enable vertical scrolling for container */
+        }
+        .box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            font-weight: bold;
+            color: black;
+            font-size: 23px;
+            margin: 0 10px; /* Adjusted margin */
+        }
+        .box img {
+            max-width: 100%;
+            max-height: 100%; /* Ensure the image doesn't overflow */
+        }
+        .box p {
+            margin: 10px 0;
+            text-align: center;
+        }
+        footer {
+            background-color: gray;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: relative; /* Change positioning to relative */
+            bottom: 0;
+            width: 100%;
+            z-index: 1; /* Ensure the footer is above other elements */
+        }
+
+        #headerhead{
+            width: 100%;
+            margin-right: 140px;
+            
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="img/EDU360__1_-removebg-preview.png" alt="Logo">
+        <span class="hello" style="font-size: 1.8em;">EDU360    </span> <!-- Increased size by 80% -->
+        <h1 id="headerhead">Home</h1>
+        <a href="/templates/upload.html">
+        <button >
+            <img src="img/pngtree-file-upload-icon-image_1344393[1].jpg" alt="Upload"> <!-- Larger image on upload button -->
+            Upload
+        </button>
+        </a>
+    </header>
+    <div class="container">
+        <a href="/analyze.html" class="box" id="box1">
+            <img src="img/stu.jpeg" alt="Image 1">
+            <p>1. Analyze Student Performance</p>
+            </a>
+        <a href="/studyplan.html" class="box" id="box2">
+            <img src="img/WhatsApp Image 2024-06-08 at 02.00.57_e89c353d.jpg" alt="Image 2">
+            <p>2. Personalized Study Planner</p>
+        </a>
+        <a href="/sheshank.html" class="box" id="box3">
+            <img src="img/Designer.png" alt="Image 3">
+            <p>3. Adaptive Assessment</p>
+        </a>
+    </div>
+    <footer>
+        <p>&copy; 2024 Edu360</p>
+    </footer>
+</body>
+</html>
