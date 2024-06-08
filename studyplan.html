@@ -6,9 +6,9 @@
     <title>Study Recommendations</title>
     <style>
 .container {
-    margin: 20px;
+    margin: 120px 20px 20px 20px; /* Increased top margin to move it downwards */
     width: 80%;
-    margin: auto;
+    height: 350px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -24,6 +24,7 @@
 .visible {
     display: block;
 }
+
 
 .result-container {
     margin-top: 20px;
@@ -64,6 +65,24 @@ header h1 {
             border-radius: 5px;
             position: relative;
             text-align: center; /* Center-align text */
+        }
+        header button {
+            padding: 15px 30px; /* Increased padding */
+            font-size: 16px;
+            cursor: pointer;
+            background-color: white;
+            color: #000; /* Changed text color to black */
+            border: none;
+            border-radius: 5px;
+            position: relative;
+            text-align: center; /* Center-align text */
+        }
+        header button img {
+            width: 30px; /* Larger image size */
+            height: auto;
+            margin-bottom: 5px; /* Spacing between image and text */
+            display: block; /* Ensure proper positioning */
+            margin: 0 auto; /* Center-align image */
         }
 
 #headerhead {
@@ -120,9 +139,13 @@ h2 {
 
 
     .container {
+        height: 400px;
+        margin: 120px auto 20px auto;
+        
+    
     border:2px solid black;
     width: 80%; /* Adjust the width as needed */
-    margin: auto; /* Center the container horizontally */
+     /* Center the container horizontally */
     display: flex;
     flex-direction: column;
     align-items: center; /* Center the items vertically */
@@ -267,7 +290,11 @@ h2 {
 <header>
     <img src="img/EDU360__1_-removebg-preview.png" alt="Logo">
     <span class="hello" style="font-size: 1.8em;">EDU360    </span> 
-    <h1 id="headerhead">Analyze Student Performance</h1>
+    <h1 id="headerhead">Personalised Study Planner</h1>
+    <button >
+        <img src="img/pngtree-file-upload-icon-image_1344393[1].jpg" alt="Upload"> <!-- Larger image on upload button -->
+        Upload
+    </button>
 </header>
 <body>
     <div class="container">
